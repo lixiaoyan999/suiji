@@ -5,7 +5,18 @@
 	 * 03		王五		119		 wangwu 
 	 
 
-	 localStorage.contact = [{},{},{}]; 
+	 localStorage.contact = [{},{},{}];
+	* 1.先获取页面中的必要元素
+    *       接收数据的一个空数组
+    *       右侧首字母的导航
+    *       还有相同首字母的集合
+    *
+    * 2.封装一个函数，然后进行调用
+    * 3.封装函数以后的第一步，首先先要清空或者说是格式化HTML中的内容，
+    * 4.函数中需要有一个能够接收筛选数据之后的空数组
+    * 5.然后对具有相同首字母的信息对象进行foreach，然后添加入新的数据内容innerHTML
+    * 
+    *  
  */
 $(function(){
 /*	let arr = [
@@ -30,12 +41,18 @@ $(function(){
 	{id:19,name:'韩寒涵',tell:'15235559999',pinyin:'haihaihai'},
 	{id:20,name:'贺赫赫',tell:'15335559999',pinyin:'hehehe'}];
 	localStorage.contact = JSON.stringify(arr);*/
+
+
+	/* 1.先获取页面中的必要元素
+    *       接收数据的一个空数组
+    *       右侧首字母的导航
+    *       还有相同首字母的集合*/
 	let data = JSON.parse(localStorage.getItem('contact'));
 	let dl = $('dl')[0];
 	let ul = $('.slide')[0];
 	let tip = $('.tip')[0];
 	let height = $('header')[0].offsetHeight + tip.offsetHeight;
-	let input = $('input')[0];
+	let inputs = $('input')[0];
 	//l[{},{},{}]
 	//g[{}]
 	//b[{}]
@@ -57,25 +74,34 @@ $(function(){
 		})
 	})
 
-	input.addEventListener('keyup',function(){
-		
+	//搜索
+	inputs.addEventListener('input',function(){
+		let inp = this.value.trim();
+		let obj1 = data.filter(element =>element.pinyin.includes(inp) || element.name.includes(inp) || element.tell.includes(inp))
+		render(obj1)
 	})
 
 
 	function render(data){
+	// 创建一个对象存放首字母数组
 		dl.innerHTML = '';
 		let obj = [];
 		//对首字母进行遍历
 		data.forEach(element => {
+			// 获取首字母
 			let firstChar = element.pinyin.trim().charAt(0).toUpperCase();
+			// 如果首字母里面是undefined
 			if(!obj[firstChar]){
+				// firstChar转为数组
 				obj[firstChar] = [];
 			}
+			// 数组里添加首字母是它的element元素
 			obj[firstChar].push(element);
 		});
 
-		//对内容进行便利并排序
+		//对内容进行遍历并排序
 		let keys = Object.keys(obj).sort();
+		// 依次遍历排列好的每个字母
 		keys.forEach(element => {
 			dl.innerHTML += `<dt>${element}</dt>`;
 			ul.innerHTML += `<li>${element}</li>`;
