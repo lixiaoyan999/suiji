@@ -83,7 +83,7 @@ class Code{
 		divs.innerText = this.char[num][0];
 		document.body.appendChild(divs);
 		this.current.push(divs);
-		// this.position.push(left);
+		this.position.push(left);
 	}
 	drops(){
 		let that = this;
